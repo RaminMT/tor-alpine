@@ -1,3 +1,5 @@
+name: Tor alpine docker image ci
+
 on:
   release:
     types: [published]
@@ -6,7 +8,7 @@ on:
 
 defaults:
   build-push-docker-image:
-    name: Tor alpine docker image ci
+    name: Build Tor with Obfs4 proxy plugin on alpine linux docker image
     runs-on: ubuntu-latest
 
     steps:
