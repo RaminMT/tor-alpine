@@ -1,10 +1,9 @@
 # Dockerfile for Tor Relay Server with obfs4proxy (Multi-Stage build)
 FROM golang:alpine AS go-build
 
-# Build /go/bin/obfs4proxy & /go/bin/meek-server
+# Build /go/bin/obfs4proxy
 RUN apk --no-cache add --update git \
- && go get -v gitweb.torproject.org/pluggable-transports/obfs4.git/obfs4proxy \
- && go get -v gitweb.torproject.org/pluggable-transports/meek.git/meek-server \
+ && go get -v gitlab.com/yawning/obfs4.git/obfs4proxy \
  && cp -rv /go/bin /usr/local/
 
 FROM alpine:latest AS tor-build
@@ -77,7 +76,7 @@ RUN apk --no-cache add --update \
       zstd \
       pwgen
 
-# Copy obfs4proxy & meek-server
+# Copy obfs4proxy
 COPY --from=go-build /usr/local/bin/ /usr/local/bin/
 
 # Copy Tor
@@ -95,8 +94,8 @@ COPY ./scripts/ /usr/local/bin/
 # Persist data
 VOLUME /etc/tor /var/lib/tor
 
-# ORPort, DirPort, SocksPort, ObfsproxyPort, MeekPort
-EXPOSE 9001 9030 9050 54444 7002
+# ORPort, DirPort, SocksPort, ObfsproxyPort
+EXPOSE 9001 9030 9050 54444
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["tor", "-f", "/etc/tor/torrc"]

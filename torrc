@@ -42,6 +42,3 @@ IPv6Exit 1
 ## the environment variables to add Nickname/ContactInfo below
 #Nickname Tor4example                 # only use letters and numbers
 #ContactInfo tor4@example.org
-
-## Use meek-server
-#ServerTransportPlugin meek exec /usr/local/bin/meek-server --port 7002 --cert cert.pem --key key.pem
