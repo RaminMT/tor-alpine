@@ -1,13 +1,12 @@
-name: Tor alpine docker image ci
-
 on:
   release:
     types: [published]
   push:
     branches: [main]
 
-jobs:
-  build:
+defaults:
+  build-push-docker-image:
+    name: Tor alpine docker image ci
     runs-on: ubuntu-latest
 
     steps:
