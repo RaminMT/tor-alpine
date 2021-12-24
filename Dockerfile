@@ -3,8 +3,8 @@ FROM golang:alpine AS go-build
 
 # Build /go/bin/obfs4proxy & /go/bin/meek-server
 RUN apk --no-cache add --update git \
- && go get -v git.torproject.org/pluggable-transports/obfs4.git/obfs4proxy \
- && go get -v git.torproject.org/pluggable-transports/meek.git/meek-server \
+ && go get -v gitweb.torproject.org/pluggable-transports/obfs4.git/obfs4proxy \
+ && go get -v gitweb.torproject.org/pluggable-transports/meek.git/meek-server \
  && cp -rv /go/bin /usr/local/
 
 FROM alpine:latest AS tor-build
