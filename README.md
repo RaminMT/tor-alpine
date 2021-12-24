@@ -1,6 +1,5 @@
 ## Tor Relay Server on Docker (Alpine)
-[![Build Status](https://travis-ci.org/chriswayg/tor-alpine.svg?branch=master)](https://travis-ci.org/chriswayg/tor-alpine)
-[![](https://images.microbadger.com/badges/image/chriswayg/tor-alpine.svg)](https://microbadger.com/images/chriswayg/tor-alpine)
+![example workflow](https://github.com/RaminMT/tor-alpine/actions/workflows/tor-alpine-dockerimage.yml/badge.svg)
 
 #### A complete, efficient and secure Tor relay server Docker image
 *This docker image, when rebuilt, will update automatically to the latest Alpine base image and install the latest current stable version of Tor server. It will run Tor as an unprivileged regular user, as recommended by torproject.org.*
@@ -31,7 +30,7 @@ docker run -d --init --name=tor-server_relay_1 --net=host \
 -e TOR_NICKNAME=Tor4 \
 -e CONTACT_EMAIL=tor4@example.org \
 -v $PWD/tor-data:/var/lib/tor \
---restart=always chriswayg/tor-alpine
+--restart=always raminmt/tor-alpine
 ```
 
 This command will run a Tor relay server with a safe default configuration (not as an exit node). The server will autostart after restarting the host system. If you do not change the default Nickname 'Tor4', the startup script will add a randomized, pronouncable suffix to create a unique name. All Tor data will be preserved in the mounted Data Directory, even if you upgrade or remove the container.
@@ -81,7 +80,7 @@ docker run -d --init --name=tor-server_relay_1 --net=host \
 -e CONTACT_EMAIL=tor4@example.org \
 -v $PWD/tor-data:/var/lib/tor \
 -v $PWD/torrc:/etc/tor/torrc \
---restart=always chriswayg/tor-alpine
+--restart=always raminmt/tor-alpine
 ```
 
 ### Move or upgrade the Tor relay
@@ -101,12 +100,12 @@ You can also reuse these identity keys from a previous Tor relay server installa
 
 ### Run Tor using docker-compose (recommended)
 
-Adapt the example `docker-compose.yml` with your settings or clone it from [Github](https://github.com/chriswayg/tor-alpine).
+Adapt the example `docker-compose.yml` with your settings or clone it from [Github](https://github.com/raminmt/tor-alpine).
 ```
 version: '2.2'
 services:
   relay:
-    image: chriswayg/tor-alpine
+    image: raminmt/tor-alpine
     init: true
     restart: always
     network_mode: host
@@ -123,7 +122,7 @@ services:
 
 - Configure the `docker-compose.yml` and optionally the `torrc` file, with your individual settings. Possibly install `git` first.
 ```
-cd /opt && git clone https://github.com/chriswayg/tor-alpine.git && cd tor-alpine
+cd /opt && git clone https://github.com/raminmt/tor-alpine.git && cd tor-alpine
 nano docker-compose.yml
 ```
 
@@ -141,7 +140,7 @@ docker-compose exec relay bash
 
 - Enter a container which is restarting with an error to inspect it
 ```
-docker run -it --entrypoint=/bin/sh chriswayg/tor-alpine --login
+docker run -it --entrypoint=/bin/sh raminmt/tor-alpine --login
 ```
 
 ### Run Tor relay with IPv6
@@ -215,13 +214,7 @@ Please use the latest Docker engine available and do not use the engine that shi
 - [Torproject - git repo](https://github.com/torproject/tor)
 - [obfs4proxy on Debian - Guide to run an obfuscated bridge to help censored users connect to the Tor network.](https://trac.torproject.org/projects/tor/wiki/doc/PluggableTransports/obfs4proxy)
 - [obfs4 - The obfourscator - Github](https://github.com/Yawning/obfs4)
-- [How to use the “meek” pluggable transport](https://blog.torproject.org/how-use-meek-pluggable-transport)
-- [meek-server for Tor meek bridge](https://github.com/arlolra/meek/tree/master/meek-server)
 - Originally based on: https://github.com/vimagick/dockerfiles/tree/master/tor
 
 ### License:
  - MIT
-
-##### For a very similar image based on tor-alpine use `chriswayg/tor-server`
- - https://hub.docker.com/r/chriswayg/tor-server
- - https://github.com/chriswayg/tor-server
