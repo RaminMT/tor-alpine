@@ -1,8 +1,6 @@
 name: Tor alpine docker image ci
 
 on:
-  release:
-    types: [published]
   push:
     branches: [main]
 
