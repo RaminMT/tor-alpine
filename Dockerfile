@@ -2,15 +2,18 @@
 FROM golang:alpine AS go-build
 
 # Build /go/bin/obfs4proxy
-RUN apk --no-cache add --update git \
- && go get -v gitlab.com/yawning/obfs4.git/obfs4proxy \
- && cp -rv /go/bin /usr/local/
+RUN apk upgrade --no-cache --update && \
+    apk add --no-cache --update git && \
+    apk --no-cache update --update && \
+    go get -v gitlab.com/yawning/obfs4.git/obfs4proxy && \
+    cp -rv /go/bin /usr/local/
 
 FROM alpine:latest AS tor-build
 ARG TOR_GPG_KEY=0x6AFEE6D49E92B601
 
 # Install prerequisites
-RUN apk --no-cache add --update \
+RUN apk upgrade --no-cache --update && \
+    apk add --no-cache --update \
         gnupg \
         build-base \
         libevent \
@@ -24,6 +27,7 @@ RUN apk --no-cache add --update \
         zstd \
         zstd-libs \
         zstd-dev \
+        openssl \
       # Install Tor from source, incl. GeoIP files (get latest release version number from Tor ReleaseNotes)
       && TOR_VERSION=$(wget -q https://gitweb.torproject.org/tor.git/plain/ReleaseNotes -O - | grep -E -m1 '^Changes in version\s[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s' | sed 's/^.*[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\.[0-9][\s]*\).*$/\1/') \
       && TOR_TARBALL_NAME="tor-${TOR_VERSION}.tar.gz" \
@@ -60,21 +64,23 @@ RUN apk --no-cache add --update \
         # /usr/local/etc/tor/torrc.sample
 
 FROM alpine:latest
-MAINTAINER Christian chriswayg@gmail.com
+MAINTAINER Ramin RaminMT007@gmail.com
 
 # If no Nickname is set, a random string will be added to 'Tor4'
 ENV TOR_USER=tord \
     TOR_NICKNAME=Tor4
 
 # Installing dependencies of Tor and pwgen
-RUN apk --no-cache add --update \
+RUN apk upgrade --no-cache --update && \
+    apk --no-cache add --update \
       libevent \
       libressl \
       xz-libs \
       zstd-libs \
       zlib \
       zstd \
-      pwgen
+      pwgen \
+      openssl
 
 # Copy obfs4proxy
 COPY --from=go-build /usr/local/bin/ /usr/local/bin/
