@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
 
-defaults:
-  build-push-docker-image:
-    name: Build Tor with Obfs4 proxy plugin on alpine linux docker image
+jobs:
+  build:
+    #name: Build Tor with Obfs4 proxy plugin on alpine linux docker image
     runs-on: ubuntu-latest
 
     steps:
