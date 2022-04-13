@@ -5,7 +5,7 @@ FROM golang:alpine AS go-build
 RUN apk upgrade --no-cache --update && \
     apk add --no-cache --update git && \
     apk --no-cache update --update && \
-    go get -v gitlab.com/yawning/obfs4.git/obfs4proxy && \
+    go install gitlab.com/yawning/obfs4.git/obfs4proxy@latest && \
     cp -rv /go/bin /usr/local/
 
 FROM alpine:latest AS tor-build
